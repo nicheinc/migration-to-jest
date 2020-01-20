@@ -2,8 +2,8 @@ import sinon from 'sinon'
 import { add, sub, mul, div, isString, prop, once } from './index'
 
 //// Test
-sinon.spy
-sandbox.spy
+jest.fn
+jest.fn
 //// End Test 
 
 describe('Testing assorted utils', () => {
