@@ -88,9 +88,9 @@ function runTransformations (directory) {
 
 function incrementalCommit (message) {
   if (!thereAreUnstagedChanges()) {
-    log('no unstaged changes, not making progress commit')
+    log('no unstaged changes, not making progress commit'.magenta)
   } else {
-    log(`making incremental commit`)
+    log(`making incremental commit`.magenta)
     execSync(`git add .`)
     execSync(`git commit -m "${message}"`)
   }
