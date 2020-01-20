@@ -1,5 +1,8 @@
 import { expect } from 'chai'
+//const expect = require('chai')
 import sinon from 'sinon'
+//const sinon = require('sinon')
+//const add, sub, mul, div, isString, prop, once = require('./index')
 import { add, sub, mul, div, isString, prop, once } from './index'
 
 describe('Testing assorted utils', () => {
