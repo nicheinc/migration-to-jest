@@ -10,9 +10,9 @@ log('Starting the migration'.magenta)
 
 const directory = process.argv[2];
 
-if(directory){
-    log('Directory ', colors.green(directory),' does exit!')
-}
+//if(directory){
+//    log('Directory ', colors.green(directory),' does exit!')
+//}
 
 if (!directory) {
   log('A directory argument is required!')
