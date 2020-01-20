@@ -29,11 +29,20 @@ console.log(`Time to run some ${'jest'.green} up in here`)
 var glob = require('glob');
 //glob('**/*.test.js', function(err, files) {
     glob('**/*.spec.js', function(err, files) {
-//    console.log(files)
     console.log(`Found ${files.length} .spec.js files, renaming to .test.js`)
     const directory = files.map(transformToJestFilename)
     console.log(`renamed ${files.length} .spec.js files to .test.js files in __test__/`)
 });
+
+function wait(ms){
+  var start = new Date().getTime();
+  var end = start;
+  while(end < start + ms) {
+    end = new Date().getTime();
+ }
+}
+
+wait(5000);
 
 incrementalCommit(`[jest-convert] rename .spec.js to .test.js`)
 
