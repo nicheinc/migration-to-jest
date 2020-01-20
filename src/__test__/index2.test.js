@@ -1,5 +1,5 @@
 import sinon from 'sinon'
-import { add, sub, mul, div, isString, prop, once } from './index'
+import { add, sub, mul, div, isString, prop, once } from '../index'
 
 
 describe('Testing assorted utils', () => {
