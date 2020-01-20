@@ -1,83 +1,96 @@
-const sync = require('glob') 
 const { execSync } = require('child_process')
 const fs = require('fs')
 var colors = require('colors')
+const fg = require('fast-glob');
+const replace  = require('replace');
 
-console.log('Hello World'.yellow)
+const log = (...args) => console.log(`[jest-convert]`.magenta, ...args)
+
+log('Starting the migration'.magenta)
 
 const directory = process.argv[2];
 
 if(directory){
-    console.log('Directory ', colors.green(directory),' does exit!')
+    log('Directory ', colors.green(directory),' does exit!')
 }
 
 if (!directory) {
-  console.log('A directory argument is required!')
-  console.log('Try:', 'babel-node ./scripts/jest-convert.js src/components/ContactHeader'.bold)
+  log('A directory argument is required!')
+  log('Try:', 'babel-node ./scripts/jest-convert.js src/components/ContactHeader'.bold)
   process.exit(1)
 }
 
 if (!fs.existsSync(directory)) {
-    console.log('Directory', directory.green, 'does not exist')
+    log('Directory', directory.green, 'does not exist')
   process.exit(1)
 }
 
-console.log(`Time to run some ${'jest'.green} up in here`)
-// const nameOfFile = directory+`\\index.spec.js`;
-// console.log('Looking for: ' , nameOfFile)
+log('Time to run some '.magenta , 'JEST'.rainbow , ' up in here!'.magenta)
+log('Renaming files and moving them to __test__'.green)
 
-//var glob = require('glob');
-//const specFile = glob.sync('**/*.spec.js');
-//console.log(specFile);
+const entries = fg.sync('**/*.spec.js');
+entries.map(transformToJestFilename);
+log(`renamed ${entries.length} .spec.js files to .test.js files in __test__/`)
+incrementalCommit(`[jest-convert] rename .spec.js to .test.js`)
 
-// var glob = require('glob');
-
-const util = require('util');
-const glob = util.promisify(require('glob'));
-
-glob('**/*.spec.js', function(err, files) {
-    console.log(`Found ${files.length} .spec.js files, renaming to .test.js`)
-  const directory = files.map(transformToJestFilename)
-  console.log(`renamed ${files.length} .spec.js files to .test.js files in __test__/`)
-  return files;
-});
-
-//glob('**/*.test.js', function(err, files) {
-
- incrementalCommit(`[jest-convert] rename .spec.js to .test.js`)
-
-function transformToJestFilename (oldPath) {
-//    const newPath = oldPath.replace('.test.js', '.spec.js')
-   const newPath = oldPath.replace('.spec.js', '.test.js')
-   //execSync(`mv ${oldPath} ${newPath}`)
-   execSync(`cp ${oldPath} __test__/${newPath}`)
-   console.log(`[rename]`.green, oldPath.split('/').pop(), '->'.bold, newPath.split('/').pop())
-    return newPath
-  }
-
-console.log(`running jest-codemod`)
+log('running jest-codemod'.blue)
 runJestCodemods()
+incrementalCommit(`[jest-convert] ran jest-codemods`)
 
+log('running global replaces'.yellow)
+runTransformations(directory+'\\__test__\\')
+incrementalCommit(`[jest-convert] ran global replaces`)
 
-function runJestCodemods () {
-   console.log(`[jest-codemod]`.blue, 'running...')
-  // execSync(`jest-codemods ./__test__/**/*.test.js --force`)
-  
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}`)
-  // console.log(`[jest-codemod]`.blue, 'chai-should')
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}`)
-  // console.log(`[jest-codemod]`.blue, 'expect')
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/expect.js ${directory}`)
-  // console.log(`[jest-codemod]`.blue, 'mocha')
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/mocha.js ${directory}`)
-}
+log('All done, ready for inspection'.magenta)
+
 
 //// Helper functions
+function transformToJestFilename (oldPath) {
+  const newPath = oldPath.replace('.spec.js', '.test.js')
+  execSync(`cp ${oldPath} __test__/${newPath}`)
+  log(`[rename]`.green, oldPath.split('/').pop(), '->'.bold, newPath.split('/').pop())
+//    return newPath
+ }
+
+ function runJestCodemods () {
+  log(`directory is ${directory}`)
+  log(`[jest-codemods]`.blue, 'chai-assert')
+  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}/__test__/`)
+  log(`[jest-codemods]`.blue, 'chai-should')
+  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}/__test__/`)
+  log(`[jest-codemods]`.blue, 'expect-js')
+  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/expect-js.js ${directory}/__test__/`)
+  log(`[jest-codemods]`.blue, 'expect')
+  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/expect.js ${directory}/__test__/`)
+  log(`[jest-codemods]`.blue, 'mocha')
+  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/mocha.js ${directory}/__test__/`)
+  log(`[jest-codemods]`.blue, 'should')
+  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/should.js ${directory}/__test__/`)
+}
+
+function runTransformations (directory) {
+  function advancedReplace(from, to){
+    replace({
+      regex: from,
+      replacement: to,
+      paths: [directory],
+      recursive: true,
+      silent: true,
+    });
+    log(`[replace]`.yellow, from, '->'.bold, to)
+  
+  }
+  
+  advancedReplace('sinon.spy', 'jest.fn')
+  advancedReplace('sandbox.spy', 'jest.fn')
+
+}
+
 function incrementalCommit (message) {
   if (!thereAreUnstagedChanges()) {
-    console.log('no unstaged changes, not making progress commit')
+    log('no unstaged changes, not making progress commit')
   } else {
-    console.log(`making incremental commit`)
+    log(`making incremental commit`)
     execSync(`git add .`)
     execSync(`git commit -m "${message}"`)
   }
@@ -86,13 +99,3 @@ function incrementalCommit (message) {
 function thereAreUnstagedChanges () {
   return execSync(`git status --porcelain`).toString().trim().length > 0
 }
-
-// function wait(ms){
-//   var start = new Date().getTime();
-//   var end = start;
-//   while(end < start + ms) {
-//     end = new Date().getTime();
-//  }
-// }
-
-// wait(3000);
