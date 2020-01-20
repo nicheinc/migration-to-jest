@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
-import { add, sub, mul, div, isString, prop, once } from './index'
+import { add, sub, mul, div, isString, prop, once } from '../index'
 
 
 describe('Testing assorted utils', () => {
@@ -70,7 +70,7 @@ describe('Testing assorted utils', () => {
 
   describe('once', () => {
     test('Only invokes the function once', () => {
-      const fn = sinon.stub()
+      const fn = jest.fn()
       const onceFn = once(fn)
       onceFn()
       onceFn()
