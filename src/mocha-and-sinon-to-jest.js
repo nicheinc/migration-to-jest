@@ -85,8 +85,7 @@ function runTransformations (directory) {
   advancedReplace('sandbox.spy', 'jest.fn')
   advancedReplace('sinon.stub', 'jest.fn')
   advancedReplace('./index', '../index')
-  
-  
+   
 }
 
 function incrementalCommit (message) {
