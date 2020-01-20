@@ -27,7 +27,7 @@ console.log(`Time to run some ${'jest'.green} up in here`)
 // console.log('Looking for: ' , nameOfFile)
 
 var glob = require('glob');
-const specFile = glob.sync('**/*.spec.js');
+const specFile = glob.sync('./**/*.spec.js');
 console.log(specFile);
 
 // var glob = require('glob');
