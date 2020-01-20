@@ -84,7 +84,6 @@ function runTransformations (directory) {
   advancedReplace('sinon.spy', 'jest.fn')
   advancedReplace('sandbox.spy', 'jest.fn')
   advancedReplace('sinon.stub', 'jest.fn')
-
   advancedReplace('./index', '../index')
   
   

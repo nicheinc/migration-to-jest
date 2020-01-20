@@ -7,7 +7,8 @@
     "_test": "mocha ./src/**/*.spec.js --require babel-core/register",
     "_test:watch": "npm run test -- --watch",
     "test-jest": "jest",
-    "test-jest:watch": "jest watch"
+    "test-jest:watch": "jest watch",
+    "migrate": "node \"\\.src\\mocha-and-sinon-to-jest.js\" \"C:\\Users\\lbilhaut\\projects\\experiments\\jest-codemods\\jest-codemods-lesson\\src\""
   },
   "keywords": [],
   "author": "",
