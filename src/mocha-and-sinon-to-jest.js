@@ -28,7 +28,7 @@ console.log(`Time to run some ${'jest'.green} up in here`)
 
 var glob = require('glob');
 //glob('**/*.test.js', function(err, files) {
-    glob('**/*.spec.js', function(err, files) {
+    glob('**/*.spec.js', sync, function(err, files) {
     console.log(`Found ${files.length} .spec.js files, renaming to .test.js`)
     const directory = files.map(transformToJestFilename)
     console.log(`renamed ${files.length} .spec.js files to .test.js files in __test__/`)
