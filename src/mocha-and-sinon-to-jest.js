@@ -26,17 +26,21 @@ console.log(`Time to run some ${'jest'.green} up in here`)
 // const nameOfFile = directory+`\\index.spec.js`;
 // console.log('Looking for: ' , nameOfFile)
 
-var glob = require('glob');
-const specFile = glob.sync('./**/*.spec.js');
-console.log(specFile);
+//var glob = require('glob');
+//const specFile = glob.sync('**/*.spec.js');
+//console.log(specFile);
 
 // var glob = require('glob');
-// // glob('**/*.spec.js', function(err, files) {
-//     console.log(`Found ${files.length} .spec.js files, renaming to .test.js`)
-//   const directory = files.map(transformToJestFilename)
-//   console.log(`renamed ${files.length} .spec.js files to .test.js files in __test__/`)
-//   return files;
-// });
+
+const util = require('util');
+const glob = util.promisify(require('glob'));
+
+glob('**/*.spec.js', function(err, files) {
+    console.log(`Found ${files.length} .spec.js files, renaming to .test.js`)
+  const directory = files.map(transformToJestFilename)
+  console.log(`renamed ${files.length} .spec.js files to .test.js files in __test__/`)
+  return files;
+});
 
 //glob('**/*.test.js', function(err, files) {
 
