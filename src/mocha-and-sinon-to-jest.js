@@ -27,24 +27,27 @@ console.log(`Time to run some ${'jest'.green} up in here`)
 // console.log('Looking for: ' , nameOfFile)
 
 var glob = require('glob');
-//glob('**/*.test.js', function(err, files) {
-    glob('**/*.spec.js', sync, function(err, files) {
+const filesToMigrate = glob('**/*.spec.js', function(err, files) {
+// glob('**/*.spec.js', function(err, files) {
     console.log(`Found ${files.length} .spec.js files, renaming to .test.js`)
-    const directory = files.map(transformToJestFilename)
-    console.log(`renamed ${files.length} .spec.js files to .test.js files in __test__/`)
+  const directory = files.map(transformToJestFilename)
+  console.log(`renamed ${files.length} .spec.js files to .test.js files in __test__/`)
+  return files;
 });
 
-function wait(ms){
-  var start = new Date().getTime();
-  var end = start;
-  while(end < start + ms) {
-    end = new Date().getTime();
- }
-}
+//glob('**/*.test.js', function(err, files) {
 
-wait(5000);
+// function wait(ms){
+//   var start = new Date().getTime();
+//   var end = start;
+//   while(end < start + ms) {
+//     end = new Date().getTime();
+//  }
+// }
 
-incrementalCommit(`[jest-convert] rename .spec.js to .test.js`)
+// wait(3000);
+
+ incrementalCommit(`[jest-convert] rename .spec.js to .test.js`)
 
 function transformToJestFilename (oldPath) {
 //    const newPath = oldPath.replace('.test.js', '.spec.js')
@@ -69,18 +72,18 @@ function transformToJestFilename (oldPath) {
     return execSync(`git status --porcelain`).toString().trim().length > 0
   }
 
-console.log(`running jest-codemod`)
-runJestCodemods()
+// console.log(`running jest-codemod`)
+// runJestCodemods()
 
-function runJestCodemods () {
-  console.log(`[jest-codemod]`.blue, 'running...')
-  execSync(`jest-codemods ./__test__/**/*.test.js`)
+// function runJestCodemods () {
+//   console.log(`[jest-codemod]`.blue, 'running...')
+//   execSync(`jest-codemods ./__test__/**/*.test.js`)
   
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}`)
-  // console.log(`[jest-codemod]`.blue, 'chai-should')
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}`)
-  // console.log(`[jest-codemod]`.blue, 'expect')
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/expect.js ${directory}`)
-  // console.log(`[jest-codemod]`.blue, 'mocha')
-  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/mocha.js ${directory}`)
-}
+//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}`)
+//   // console.log(`[jest-codemod]`.blue, 'chai-should')
+//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}`)
+//   // console.log(`[jest-codemod]`.blue, 'expect')
+//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/expect.js ${directory}`)
+//   // console.log(`[jest-codemod]`.blue, 'mocha')
+//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/mocha.js ${directory}`)
+// }
