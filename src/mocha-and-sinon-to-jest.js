@@ -72,18 +72,18 @@ function transformToJestFilename (oldPath) {
     return execSync(`git status --porcelain`).toString().trim().length > 0
   }
 
-// console.log(`running jest-codemod`)
-// runJestCodemods()
+console.log(`running jest-codemod`)
+runJestCodemods()
 
-// function runJestCodemods () {
-//   console.log(`[jest-codemod]`.blue, 'running...')
-//   execSync(`jest-codemods ./__test__/**/*.test.js`)
+function runJestCodemods () {
+  console.log(`[jest-codemod]`.blue, 'running...')
+  execSync(`jest-codemods ./__test__/**/*.test.js`)
   
-//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}`)
-//   // console.log(`[jest-codemod]`.blue, 'chai-should')
-//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}`)
-//   // console.log(`[jest-codemod]`.blue, 'expect')
-//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/expect.js ${directory}`)
-//   // console.log(`[jest-codemod]`.blue, 'mocha')
-//   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/mocha.js ${directory}`)
-// }
+  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}`)
+  // console.log(`[jest-codemod]`.blue, 'chai-should')
+  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}`)
+  // console.log(`[jest-codemod]`.blue, 'expect')
+  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/expect.js ${directory}`)
+  // console.log(`[jest-codemod]`.blue, 'mocha')
+  // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/mocha.js ${directory}`)
+}
