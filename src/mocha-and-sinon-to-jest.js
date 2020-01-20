@@ -54,10 +54,10 @@ function transformToJestFilename (oldPath) {
 
  function runJestCodemods () {
   log(`directory is ${directory}`)
-  log(`[jest-codemods]`.blue, 'chai-assert')
-  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}/__test__/`)
-  // log(`[jest-codemods]`.blue, 'chai-should')
-  // execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}/__test__/`)
+  // log(`[jest-codemods]`.blue, 'chai-assert')
+  // execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}/__test__/`)
+  log(`[jest-codemods]`.blue, 'chai-should')
+  execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/chai-should.js ${directory}/__test__/`)
   log(`[jest-codemods]`.blue, 'expect-js')
   execSync(`jscodeshift -t ../node_modules/jest-codemods/dist/transformers/expect-js.js ${directory}/__test__/`)
   log(`[jest-codemods]`.blue, 'expect')
