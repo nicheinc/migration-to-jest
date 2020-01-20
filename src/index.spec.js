@@ -2,11 +2,6 @@ import { expect } from 'chai'
 import sinon from 'sinon'
 import { add, sub, mul, div, isString, prop, once } from './index'
 
-//// Test
-sinon.spy
-sandbox.spy
-//// End Test 
-
 describe('Testing assorted utils', () => {
   context('add', () => {
     it('Adds two numbers', () => {
