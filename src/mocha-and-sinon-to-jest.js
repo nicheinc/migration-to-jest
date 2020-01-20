@@ -37,15 +37,7 @@ const filesToMigrate = glob('**/*.spec.js', function(err, files) {
 
 //glob('**/*.test.js', function(err, files) {
 
-// function wait(ms){
-//   var start = new Date().getTime();
-//   var end = start;
-//   while(end < start + ms) {
-//     end = new Date().getTime();
-//  }
-// }
 
-// wait(3000);
 
  incrementalCommit(`[jest-convert] rename .spec.js to .test.js`)
 
@@ -58,26 +50,13 @@ function transformToJestFilename (oldPath) {
     return newPath
   }
 
-  function incrementalCommit (message) {
-    if (!thereAreUnstagedChanges()) {
-      console.log('no unstaged changes, not making progress commit')
-    } else {
-      console.log(`making incremental commit`)
-      execSync(`git add .`)
-      execSync(`git commit -m "${message}"`)
-    }
-  }
-
-  function thereAreUnstagedChanges () {
-    return execSync(`git status --porcelain`).toString().trim().length > 0
-  }
-
 console.log(`running jest-codemod`)
 runJestCodemods()
 
+
 function runJestCodemods () {
-  console.log(`[jest-codemod]`.blue, 'running...')
-  execSync(`jest-codemods ./__test__/**/*.test.js`)
+   console.log(`[jest-codemod]`.blue, 'running...')
+  // execSync(`jest-codemods ./__test__/**/*.test.js --force`)
   
   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/chai-assert.js ${directory}`)
   // console.log(`[jest-codemod]`.blue, 'chai-should')
@@ -87,3 +66,28 @@ function runJestCodemods () {
   // console.log(`[jest-codemod]`.blue, 'mocha')
   // execSync(`jscodeshift -t ./node_modules/jest-codemods/dist/transformers/mocha.js ${directory}`)
 }
+
+//// Helper functions
+function incrementalCommit (message) {
+  if (!thereAreUnstagedChanges()) {
+    console.log('no unstaged changes, not making progress commit')
+  } else {
+    console.log(`making incremental commit`)
+    execSync(`git add .`)
+    execSync(`git commit -m "${message}"`)
+  }
+}
+
+function thereAreUnstagedChanges () {
+  return execSync(`git status --porcelain`).toString().trim().length > 0
+}
+
+// function wait(ms){
+//   var start = new Date().getTime();
+//   var end = start;
+//   while(end < start + ms) {
+//     end = new Date().getTime();
+//  }
+// }
+
+// wait(3000);
