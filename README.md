@@ -12,6 +12,6 @@ The script runs in 3 parts, automatically committing the changes in-between:
 
 The script and the process to run it is still a work in progress. For now
 1. Naviguate to the `src` folder
-2. Run `node mocha-and-sinon-to-jest.js "C:\Users\lbilhaut\projects\experiments\migration-to-jest\src"`
+2. Run `node mocha-and-sinon-to-jest.js "path to the src folder"`
 
 
