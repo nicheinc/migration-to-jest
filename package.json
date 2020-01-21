@@ -30,6 +30,7 @@
     "jest": "^24.9.0",
     "jest-codemods": "^0.22.1",
     "jscodeshift": "^0.7.0",
+    "just-extend": "^4.0.0",
     "replace": "^1.1.5"
   }
 }
