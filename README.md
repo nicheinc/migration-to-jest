@@ -11,7 +11,8 @@ The script runs in 3 parts, automatically committing the changes in-between:
 3. It replaces ad-hoc test expressions by jest expressions
 
 The script and the process to run it is still a work in progress. For now
-1. Naviguate to the `src` folder
-2. Run `node mocha-and-sinon-to-jest.js "path to the src folder"`
+1. Copy the script file `mocha-and-sinon-to-jest.js` to the directory where the tests you want to convert are.
+2. Run `node mocha-and-sinon-to-jest.js .`
+3. A new directory `__test__` should be added to the directory with the converted test files in it.
 
 
